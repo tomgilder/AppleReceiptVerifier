@@ -6,6 +6,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using AppleReceiptVerifier.Interfaces;
+using System.Net.Http;
 
 namespace AppleReceiptVerifier
 {
@@ -22,35 +23,11 @@ namespace AppleReceiptVerifier
         /// <returns>
         /// response as string
         /// </returns>
-        public string GetResponse(Uri url, string postData)
+        public async Task<string> GetResponseAsync(Uri url, string postData)
         {
-            string response = string.Empty;
-
-            try
-            {
-                WebRequest webRequest = WebRequest.Create(url);
-                webRequest.ContentType = "text/plain";
-                webRequest.Method = "POST";
-
-                using (var streamWriter = new StreamWriter(webRequest.GetRequestStream()))
-                {
-                    streamWriter.Write(postData);
-                    streamWriter.Flush();
-                    streamWriter.Close();
-                }
-
-                WebResponse webResponse = webRequest.GetResponse();
-                using (var streamReader = new StreamReader(webResponse.GetResponseStream()))
-                {
-                    response = streamReader.ReadToEnd();
-                    streamReader.Close();
-                }
-            }
-            catch
-            {
-            }
-
-            return response;
+            var client = new HttpClient();
+            var response = await client.PostAsync(url, new StringContent(postData));
+            return await response.Content.ReadAsStringAsync();
         }
     }
 }

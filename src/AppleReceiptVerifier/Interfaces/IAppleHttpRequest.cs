@@ -19,6 +19,6 @@ namespace AppleReceiptVerifier.Interfaces
         /// <returns>
         /// response as string
         /// </returns>
-        string GetResponse(Uri url, string postData);
+        Task<string> GetResponseAsync(Uri url, string postData);
     }
 }

@@ -18,6 +18,6 @@ namespace AppleReceiptVerifier.Interfaces
         /// <param name="postUri">Uri to post receipt data to</param>
         /// <param name="receiptData">receipt data from apple</param>
         /// <returns>returns Response</returns>
-        Response ValidateReceipt(Uri postUri, string receiptData);
+        Task<Response> ValidateReceiptAsync(Uri postUri, string receiptData);
     }
 }

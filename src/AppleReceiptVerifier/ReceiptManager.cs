@@ -42,7 +42,7 @@ namespace AppleReceiptVerifier
         /// <param name="postUri">Uri to post receipt data to</param>
         /// <param name="receiptData">receipt data from apple</param>
         /// <returns>returns <see cref="Response" />Response</returns>
-        public Response ValidateReceipt(Uri postUri, string receiptData)
+        public async Task<Response> ValidateReceiptAsync(Uri postUri, string receiptData)
         {
             try
             {
@@ -52,7 +52,7 @@ namespace AppleReceiptVerifier
                 postObject.Add("receipt-data", receipt64);
                 string json = JsonConvert.SerializeObject(postObject);
 
-                var rawResponse = this.appleHttpRequest.GetResponse(postUri, json);
+                var rawResponse = await this.appleHttpRequest.GetResponseAsync(postUri, json);
                 var serializedResponse = JsonConvert.DeserializeObject<Response>(rawResponse);
                 if (serializedResponse != null)
                 {
